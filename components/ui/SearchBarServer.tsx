@@ -18,24 +18,26 @@ export function SearchBarServer() {
     startTransition(() => router.push(`/search?${params.toString()}`));
   }
 
+  const inputStyle: React.CSSProperties = {
+    border: "none",
+    outline: "none",
+    fontFamily: "inherit",
+    fontSize: 15,
+    fontWeight: 700,
+    color: "var(--color-navy)",
+    width: "100%",
+    background: "transparent",
+    padding: 0,
+  };
+
   return (
-    <div
-      style={{
-        display: "flex",
-        background: "#fff",
-        borderRadius: 16,
-        boxShadow: "0 24px 60px rgba(5,15,34,.28), 0 8px 24px rgba(5,15,34,.12)",
-        border: "1px solid rgba(255,255,255,.08)",
-        maxWidth: 700,
-        overflow: "hidden",
-      }}
-    >
+    <div className="search-bar">
       <datalist id="cities-list">
         {cities.map((c) => <option key={c} value={c} />)}
       </datalist>
 
       {/* From */}
-      <div style={{ flex: 1, padding: "16px 22px", borderRight: "1px solid var(--color-line)" }}>
+      <div className="search-bar-divider" style={{ flex: 1, padding: "16px 22px", borderRight: "1px solid var(--color-line)" }}>
         <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--color-muted-2)", marginBottom: 4 }}>
           Nereden
         </div>
@@ -44,22 +46,12 @@ export function SearchBarServer() {
           value={from}
           onChange={(e) => setFrom(e.target.value)}
           placeholder="Kalkış şehri"
-          style={{
-            border: "none",
-            outline: "none",
-            fontFamily: "inherit",
-            fontSize: 15,
-            fontWeight: 700,
-            color: "var(--color-navy)",
-            width: "100%",
-            background: "transparent",
-            padding: 0,
-          }}
+          style={inputStyle}
         />
       </div>
 
       {/* To */}
-      <div style={{ flex: 1, padding: "16px 22px", borderRight: "1px solid var(--color-line)" }}>
+      <div className="search-bar-divider" style={{ flex: 1, padding: "16px 22px", borderRight: "1px solid var(--color-line)" }}>
         <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--color-muted-2)", marginBottom: 4 }}>
           Nereye
         </div>
@@ -68,22 +60,12 @@ export function SearchBarServer() {
           value={to}
           onChange={(e) => setTo(e.target.value)}
           placeholder="Varış şehri"
-          style={{
-            border: "none",
-            outline: "none",
-            fontFamily: "inherit",
-            fontSize: 15,
-            fontWeight: 700,
-            color: "var(--color-navy)",
-            width: "100%",
-            background: "transparent",
-            padding: 0,
-          }}
+          style={inputStyle}
         />
       </div>
 
       {/* Search btn */}
-      <div style={{ display: "grid", placeItems: "center", padding: "0 18px" }}>
+      <div className="search-bar-btn" style={{ display: "grid", placeItems: "center", padding: "0 18px" }}>
         <button
           onClick={handleSearch}
           disabled={isPending}
@@ -98,6 +80,7 @@ export function SearchBarServer() {
             cursor: "pointer",
             boxShadow: "0 4px 14px rgba(8,31,65,.18)",
             opacity: isPending ? 0.7 : 1,
+            width: "100%",
           }}
         >
           Ara

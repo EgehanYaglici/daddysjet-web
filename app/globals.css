@@ -63,3 +63,211 @@ button {
 ::-webkit-scrollbar { width: 11px; height: 11px; }
 ::-webkit-scrollbar-thumb { background: #C3CFE0; border-radius: 8px; border: 3px solid var(--color-paper); }
 ::-webkit-scrollbar-thumb:hover { background: #A6B6CE; }
+
+/* ── Responsive layout helpers ── */
+.container-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 768px) {
+  .container-page { padding: 0 18px; }
+}
+
+/* Hero */
+.hero-section {
+  position: relative;
+  min-height: 720px;
+  margin-top: -74px;
+  padding-top: 74px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #050F22 0%, #081F41 45%, #12305C 100%);
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .hero-section { min-height: auto; }
+}
+
+.hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 80px 32px 70px;
+  width: 100%;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .hero-inner { padding: 56px 18px 52px; }
+}
+
+.hero-title {
+  font-size: clamp(36px, 4.6vw, 62px);
+  line-height: 1.07;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.035em;
+  margin: 0 0 18px;
+  max-width: 760px;
+}
+
+.hero-sub {
+  font-size: clamp(15px, 1.4vw, 19px);
+  color: rgba(255,255,255,.72);
+  max-width: 560px;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0 0 44px;
+}
+@media (max-width: 768px) {
+  .hero-sub { margin-bottom: 28px; }
+}
+
+.hero-stats {
+  display: flex;
+  gap: 36px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .hero-stats { gap: 24px; margin-top: 32px; }
+}
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(5,15,34,.28), 0 8px 24px rgba(5,15,34,.12);
+  border: 1px solid rgba(255,255,255,.08);
+  max-width: 700px;
+  overflow: hidden;
+}
+@media (max-width: 600px) {
+  .search-bar { flex-direction: column; border-radius: 16px; }
+  .search-bar-divider { border-right: none !important; border-bottom: 1px solid var(--color-line); }
+  .search-bar-btn { padding: 14px 22px !important; }
+}
+
+/* Flight grids */
+.flight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+@media (max-width: 480px) {
+  .flight-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+
+/* Section */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+/* How it works */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 768px) {
+  .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* Trust grid */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 900px) {
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+
+/* Footer */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* Header nav */
+.header-nav-desktop { display: flex; align-items: center; gap: 28px; }
+.header-nav-mobile { display: none; }
+.hamburger { display: none; }
+@media (max-width: 768px) {
+  .header-nav-desktop { display: none; }
+  .hamburger { display: flex; }
+  .header-actions-text { display: none; }
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 74px;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,.97);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--color-line);
+  padding: 20px 24px 28px;
+  z-index: 49;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+
+/* Search page layout */
+.search-layout { display: flex; gap: 28px; }
+.search-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--color-line);
+  padding: 22px;
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+}
+@media (max-width: 900px) {
+  .search-sidebar { display: none; }
+  .search-layout { display: block; }
+}
+
+/* Flight detail */
+.detail-layout { display: flex; gap: 28px; align-items: flex-start; }
+.detail-main { flex: 1; }
+.detail-sidebar {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 90px;
+}
+@media (max-width: 900px) {
+  .detail-layout { flex-direction: column; }
+  .detail-sidebar { width: 100%; position: static; }
+}
+
+/* Booking detail specs */
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+}
+@media (max-width: 480px) {
+  .specs-grid { grid-template-columns: 1fr; gap: 14px; }
+}

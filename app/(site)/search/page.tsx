@@ -60,22 +60,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
 
-      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "32px 32px 0" }}>
-        <div style={{ display: "flex", gap: 28 }}>
+      <div className="container-page" style={{ paddingTop: 32 }}>
+        <div className="search-layout">
           {/* Sidebar filters */}
-          <aside
-            style={{
-              width: 240,
-              flexShrink: 0,
-              background: "#fff",
-              borderRadius: 16,
-              border: "1px solid var(--color-line)",
-              padding: "22px",
-              height: "fit-content",
-              position: "sticky",
-              top: 90,
-            }}
-          >
+          <aside className="search-sidebar">
             <div style={{ fontSize: 14, fontWeight: 800, color: "var(--color-navy)", marginBottom: 18, letterSpacing: "-0.01em" }}>
               Filtrele
             </div>
@@ -177,7 +165,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 </a>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
+              <div className="flight-grid">
                 {flights.map((f, i) => (
                   <FlightCard key={f.id} f={f} index={i} />
                 ))}

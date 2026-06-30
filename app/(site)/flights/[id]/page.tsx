@@ -194,10 +194,10 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 32px" }}>
-        <div style={{ display: "flex", gap: 28, alignItems: "flex-start", marginTop: -40, position: "relative" }}>
+      <div className="container-page">
+        <div className="detail-layout" style={{ marginTop: -40, position: "relative" }}>
           {/* Main info */}
-          <div style={{ flex: 1 }}>
+          <div className="detail-main">
             {/* Card 1 — Details */}
             <div
               style={{
@@ -221,13 +221,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
                 Uçuş Detayları
               </h2>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px 32px",
-                }}
-              >
+              <div className="specs-grid">
                 {[
                   ["Tarih", fmtDate(flight.departureAt.toISOString())],
                   ["Saat", fmtTime(flight.departureAt.toISOString())],
@@ -389,14 +383,7 @@ export default async function FlightDetailPage({ params }: { params: Promise<{ i
           </div>
 
           {/* Booking sidebar */}
-          <div
-            style={{
-              width: 340,
-              flexShrink: 0,
-              position: "sticky",
-              top: 90,
-            }}
-          >
+          <div className="detail-sidebar">
             <div
               style={{
                 background: "#fff",
