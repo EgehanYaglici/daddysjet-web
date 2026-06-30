@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── USERS ───────────────────────────────────────────────
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  phone       String?
+  avatarUrl   String?
+  cognitoId   String?  @unique
+  role        Role     @default(CUSTOMER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookings      Booking[]
+  reviews       Review[]
+  notifications Notification[]
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  OPERATOR_RELATIONS
+  CUSTOMER_SERVICE
+}
+
+// ─── OPERATORS ───────────────────────────────────────────
+model Operator {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  rating      Float    @default(5.0)
+  reviewCount Int      @default(0)
+  flightCount Int      @default(0)
+  trusted     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  flights Flight[]
+}
+
+// ─── FLIGHTS ─────────────────────────────────────────────
+model Flight {
+  id          String      @id @default(cuid())
+  externalId  String?     @unique
+  operatorId  String
+
+  fromCity    String
+  fromCode    String
+  fromAirport String
+  toCity      String
+  toCode      String
+  toAirport   String
+
+  departureAt DateTime
+  durationHrs Float
+  aircraft    String
+  category    JetCategory
+  capacity    Int
+  baggage     String
+
+  priceUSD    Int
+  listUSD     Int
+  petFriendly Boolean?
+  isHotDeal   Boolean     @default(false)
+  tags        String[]
+
+  scene       String
+  photoKeys   String[]
+
+  status      FlightStatus @default(AVAILABLE)
+  expiresAt   DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  operator Operator @relation(fields: [operatorId], references: [id])
+  bookings Booking[]
+  reviews  Review[]
+
+  @@index([status, departureAt])
+  @@index([fromCode, toCode])
+}
+
+enum JetCategory {
+  LIGHT_JET
+  MIDSIZE_JET
+  SUPER_MIDSIZE
+  HEAVY_JET
+}
+
+enum FlightStatus {
+  AVAILABLE
+  RESERVED
+  CONFIRMED
+  SOLD
+  EXPIRED
+  CANCELLED
+}
+
+// ─── BOOKINGS ────────────────────────────────────────────
+model Booking {
+  id              String        @id @default(cuid())
+  pnr             String        @unique
+  flightId        String
+  userId          String?
+
+  passengerName   String
+  passengerEmail  String
+  passengerPhone  String
+  passengerDob    String?
+  passengerGender String?
+
+  paymentMethod   PaymentMethod
+  depositUSD      Int
+  totalUSD        Int
+  feeUSD          Int           @default(0)
+
+  status          BookingStatus @default(DEPOSIT_PENDING)
+  iyzipayRef      String?
+  iyzipayToken    String?
+
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  flight        Flight         @relation(fields: [flightId], references: [id])
+  user          User?          @relation(fields: [userId], references: [id])
+  payments      Payment[]
+  notifications Notification[]
+
+  @@index([passengerEmail])
+  @@index([status])
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  TL_TRANSFER
+  USD_SWIFT
+}
+
+enum BookingStatus {
+  DEPOSIT_PENDING
+  DEPOSIT_PAID
+  OPERATOR_APPROVED
+  FULLY_PAID
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+// ─── PAYMENTS ────────────────────────────────────────────
+model Payment {
+  id          String        @id @default(cuid())
+  bookingId   String
+  amountUSD   Int
+  currency    String        @default("USD")
+  method      PaymentMethod
+  status      PayStatus     @default(PENDING)
+  iyzipayRef  String?
+  metadata    Json?
+  createdAt   DateTime      @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+}
+
+enum PayStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+// ─── REVIEWS ─────────────────────────────────────────────
+model Review {
+  id        String   @id @default(cuid())
+  flightId  String
+  userId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  flight Flight @relation(fields: [flightId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([flightId, userId])
+}
+
+// ─── NOTIFICATIONS ───────────────────────────────────────
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  bookingId String?
+  type      String
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
+}
+
+// ─── EXCHANGE RATES ───────────────────────────────────────
+model ExchangeRate {
+  id         String   @id @default(cuid())
+  usdToTry   Float
+  margin     Float    @default(0.025)
+  setByAdmin String
+  createdAt  DateTime @default(now())
+}
