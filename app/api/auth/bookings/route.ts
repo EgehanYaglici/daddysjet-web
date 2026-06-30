@@ -1,23 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserFromToken, getAuthHeader } from "@/lib/auth";
+import { getUserFromToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
-  const token = getAuthHeader(req);
-  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const token =
+    req.cookies.get("dj_access_token")?.value ??
+    (req.headers.get("authorization")?.startsWith("Bearer ")
+      ? req.headers.get("authorization")!.slice(7)
+      : null);
+
+  if (!token) return NextResponse.json({ bookings: [] });
 
   const user = await getUserFromToken(token);
-  if (!user) return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  if (!user) return NextResponse.json({ bookings: [] });
 
   const bookings = await prisma.booking.findMany({
     where: { userId: user.id },
     include: {
       flight: {
-        include: { operator: { select: { code: true, rating: true, trusted: true } } },
+        select: {
+          fromCity: true,
+          toCity: true,
+          departureAt: true,
+          priceUSD: true,
+          aircraft: true,
+        },
       },
     },
     orderBy: { createdAt: "desc" },
+    take: 50,
   });
 
-  return NextResponse.json(bookings);
+  return NextResponse.json({ bookings: JSON.parse(JSON.stringify(bookings)) });
 }

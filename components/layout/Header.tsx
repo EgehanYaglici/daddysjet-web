@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/lib/useAuth";
 
 const NAV = [
   ["Hot Deals", "/search?hot=1"],
@@ -12,6 +13,8 @@ const NAV = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = pathname === "/";
@@ -25,11 +28,15 @@ export function Header() {
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+
+  async function handleSignOut() {
+    await signOut();
+    router.push("/");
+  }
 
   const light = isHome && !scrolled && !menuOpen;
 
@@ -93,25 +100,79 @@ export function Header() {
 
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Link
-              href="/portal"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 7,
-                background: light ? "rgba(255,255,255,.16)" : "var(--color-navy)",
-                color: "#fff",
-                border: light ? "1px solid rgba(255,255,255,.3)" : "none",
-                backdropFilter: light ? "blur(6px)" : "none",
-                borderRadius: 10,
-                padding: "9px 18px",
-                fontSize: 14,
-                fontWeight: 700,
-              }}
-            >
-              <span className="header-actions-text">Rezervasyonum</span>
-              <span style={{ fontSize: 16 }}>→</span>
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/profile"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "7px 14px",
+                    borderRadius: 99,
+                    background: light ? "rgba(255,255,255,.16)" : "var(--color-mist)",
+                    border: light ? "1px solid rgba(255,255,255,.25)" : "1px solid var(--color-line)",
+                    textDecoration: "none",
+                  }}
+                >
+                  <div style={{
+                    width: 26,
+                    height: 26,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, #1A6FD4, #0f4d9e)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 11,
+                    color: "#fff",
+                    fontWeight: 800,
+                    flexShrink: 0,
+                  }}>
+                    {(user.name ?? user.email)[0].toUpperCase()}
+                  </div>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: light ? "#fff" : "var(--color-navy)" }} className="header-actions-text">
+                    {user.name?.split(" ")[0] ?? "Profil"}
+                  </span>
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: light ? "rgba(255,255,255,.6)" : "var(--color-muted)",
+                    padding: "8px 4px",
+                    fontFamily: "inherit",
+                  }}
+                  className="header-actions-text"
+                >
+                  Çıkış
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/auth"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 7,
+                  background: light ? "rgba(255,255,255,.16)" : "var(--color-navy)",
+                  color: "#fff",
+                  border: light ? "1px solid rgba(255,255,255,.3)" : "none",
+                  backdropFilter: light ? "blur(6px)" : "none",
+                  borderRadius: 10,
+                  padding: "9px 18px",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                <span className="header-actions-text">Giriş Yap</span>
+                <span style={{ fontSize: 16 }}>→</span>
+              </Link>
+            )}
 
             {/* Hamburger */}
             <button
@@ -123,7 +184,7 @@ export function Header() {
                 border: "none",
                 cursor: "pointer",
                 padding: "8px",
-                display: "none", // overridden by CSS class on mobile
+                display: "none",
                 flexDirection: "column",
                 gap: 5,
                 alignItems: "center",
@@ -186,22 +247,67 @@ export function Header() {
             {label}
           </Link>
         ))}
-        <Link
-          href="/portal"
-          style={{
-            display: "block",
-            marginTop: 16,
-            background: "var(--color-navy)",
-            color: "#fff",
-            borderRadius: 12,
-            padding: "14px 20px",
-            fontSize: 16,
-            fontWeight: 700,
-            textAlign: "center",
-          }}
-        >
-          Rezervasyonum
-        </Link>
+
+        {user ? (
+          <>
+            <Link
+              href="/profile"
+              style={{
+                display: "block",
+                marginTop: 16,
+                background: "var(--color-navy)",
+                color: "#fff",
+                borderRadius: 12,
+                padding: "14px 20px",
+                fontSize: 16,
+                fontWeight: 700,
+                textAlign: "center",
+                textDecoration: "none",
+              }}
+            >
+              Profilim
+            </Link>
+            <button
+              onClick={handleSignOut}
+              style={{
+                display: "block",
+                width: "100%",
+                marginTop: 10,
+                background: "none",
+                border: "1.5px solid var(--color-line)",
+                color: "var(--color-muted)",
+                borderRadius: 12,
+                padding: "13px 20px",
+                fontSize: 15,
+                fontWeight: 700,
+                textAlign: "center",
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              Çıkış Yap
+            </button>
+          </>
+        ) : (
+          <Link
+            href="/auth"
+            style={{
+              display: "block",
+              marginTop: 16,
+              background: "var(--color-navy)",
+              color: "#fff",
+              borderRadius: 12,
+              padding: "14px 20px",
+              fontSize: 16,
+              fontWeight: 700,
+              textAlign: "center",
+              textDecoration: "none",
+            }}
+          >
+            Giriş Yap / Kayıt Ol
+          </Link>
+        )}
+
         <a
           href="https://wa.me/905XXXXXXXXX"
           target="_blank"
