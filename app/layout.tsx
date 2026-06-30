@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "Daddy's Jet — Empty Leg Uçuşları",
   description: "Türkiye'nin ilk empty leg jet platformu. Yetkili operatörlerden boş bacak uçuşları, gerçek zamanlı fiyatlarla.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://daddysjet.com"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Daddy's Jet",
     description: "Empty leg uçuşlarında en iyi fiyatlar",
