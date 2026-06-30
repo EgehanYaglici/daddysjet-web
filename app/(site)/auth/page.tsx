@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const COGNITO_DOMAIN = "https://daddysjet.auth.eu-central-1.amazoncognito.com";
@@ -67,7 +67,7 @@ function PlaneStars({ count }: { count: number }) {
   );
 }
 
-export default function AuthPage() {
+function AuthPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("return") ?? "/profile";
@@ -798,5 +798,13 @@ export default function AuthPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#050e1f" }} />}>
+      <AuthPageInner />
+    </Suspense>
   );
 }
