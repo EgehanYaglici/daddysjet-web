@@ -281,6 +281,20 @@ button {
 @media (max-width: 768px) {
   .routes-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
+.route-card {
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(8,31,65,.06);
+  display: block;
+  transition: transform .2s, box-shadow .2s;
+}
+.route-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(8,31,65,.12);
+}
 
 /* Eyebrow label */
 .eyebrow {

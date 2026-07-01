@@ -249,7 +249,7 @@ export default async function HomePage() {
               { from: "İstanbul", to: "Dubai", code: "LTFM → OMDB", price: "$18,500" },
               { from: "İstanbul", to: "Paris", code: "LTFM → LFPB", price: "$22,000" },
             ].map((r) => (
-              <a key={r.code} href="/search" style={{ textDecoration: "none", borderRadius: 16, overflow: "hidden", border: "1px solid var(--color-line)", background: "#fff", boxShadow: "0 1px 3px rgba(8,31,65,.06)", display: "block", transition: "transform .2s, box-shadow .2s" }} onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 12px 32px rgba(8,31,65,.12)"; }} onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 1px 3px rgba(8,31,65,.06)"; }}>
+              <a key={r.code} href="/search" className="route-card">
                 <div style={{ height: 110, background: "linear-gradient(135deg, #0E2D4F, #15448C)", position: "relative", display: "flex", alignItems: "flex-end", padding: "0 12px 10px" }}>
                   <div style={{ fontSize: 15, fontWeight: 800, color: "#fff" }}>{r.from} → {r.to}</div>
                 </div>
