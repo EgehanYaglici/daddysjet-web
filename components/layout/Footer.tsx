@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const COL = [
   ["Keşfet", [["Hot Deals", "/search?hot=1"], ["Tüm Rotalar", "/search"], ["İstanbul → Bodrum", "/search?from=İstanbul&to=Bodrum"], ["İstanbul → Dubai", "/search?from=İstanbul&to=Dubai"]]],
@@ -13,9 +14,7 @@ export function Footer() {
         <div className="footer-grid">
           {/* Brand col */}
           <div>
-            <span style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.03em" }}>
-              Daddy&apos;s Jet
-            </span>
+            <Image src="/logo_lockup_light.svg" alt="Daddy's Jet" width={160} height={36} style={{ height: 38, width: "auto" }} />
             <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--color-gold)", marginTop: 12, opacity: 0.8 }}>
               Daddy knows a better way
             </p>

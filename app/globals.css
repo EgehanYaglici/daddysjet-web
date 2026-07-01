@@ -170,10 +170,10 @@ button {
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  gap: 44px;
 }
 @media (max-width: 768px) {
-  .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 
 /* Trust grid */
@@ -270,4 +270,110 @@ button {
 }
 @media (max-width: 480px) {
   .specs-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+
+/* Popular routes grid */
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .routes-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  margin-bottom: 8px;
+}
+
+/* Ghost button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1.5px solid var(--color-line-strong);
+  color: var(--color-navy);
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+  background: var(--color-sky-50);
+}
+
+/* Live pill */
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Pulse dot */
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74,222,128,.3);
+  display: inline-block;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(74,222,128,.3); }
+  50% { box-shadow: 0 0 0 5px rgba(74,222,128,.15); }
+}
+
+/* Node ping animation on how-it-works circles */
+.node-ping {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  opacity: 0;
+  animation: node-ping 6s infinite;
+}
+@keyframes node-ping {
+  0% { opacity: 0; transform: scale(1); }
+  10% { opacity: 0.6; }
+  40% { opacity: 0; transform: scale(1.55); }
+  100% { opacity: 0; transform: scale(1.55); }
+}
+
+/* Hero quick routes */
+.hero-quick-routes {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+/* Color tokens referenced without prefix */
+:root {
+  --color-ok: #1E8E63;
+  --color-ok-soft: #E5F2EB;
+  --color-gold-soft: #F4EAD4;
+  --color-line-strong: #CCD8E7;
 }

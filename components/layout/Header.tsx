@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 
@@ -67,16 +68,14 @@ export function Header() {
         >
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 800,
-                color: light ? "#fff" : "var(--color-navy)",
-                letterSpacing: "-0.03em",
-              }}
-            >
-              Daddy&apos;s Jet
-            </span>
+            <Image
+              src={light ? "/logo_lockup_light.svg" : "/logo_lockup.svg"}
+              alt="Daddy's Jet"
+              width={160}
+              height={36}
+              style={{ height: 38, width: "auto" }}
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
